@@ -16,7 +16,6 @@ import (
 )
 
 const (
-	wrongID     = "0"
 	wrongValue  = "wrong-value"
 	expInterval = 60 // in seconds
 )

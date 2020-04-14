@@ -15,11 +15,7 @@ import (
 	dockertest "gopkg.in/ory/dockertest.v3"
 )
 
-const (
-	wrongID     = "0"
-	wrongValue  = "wrong-value"
-	expInterval = 60 // in seconds
-)
+const expInterval = 60 // in seconds
 
 var (
 	testLog, _ = logger.New(os.Stdout, logger.Info.String())
