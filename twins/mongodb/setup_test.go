@@ -16,8 +16,9 @@ import (
 )
 
 const (
-	wrongID    = "0"
-	wrongValue = "wrong-value"
+	wrongID     = "0"
+	wrongValue  = "wrong-value"
+	expInterval = 60 // in seconds
 )
 
 func TestMain(m *testing.M) {
@@ -33,6 +34,11 @@ func TestMain(m *testing.M) {
 	container, err := pool.Run("mongo", "3.6-jessie", cfg)
 	if err != nil {
 		testLog.Error(fmt.Sprintf("Could not start container: %s", err))
+	}
+
+	// Force remove the container after the interval
+	if err := container.Expire(expInterval); err != nil {
+		testLog.Error(fmt.Sprintf("Could not expire container: %s", err))
 	}
 
 	port = container.GetPort("27017/tcp")

@@ -14,8 +14,9 @@ import (
 )
 
 const (
-	wrongID    = 0
-	wrongValue = "wrong-value"
+	wrongID     = 0
+	wrongValue  = "wrong-value"
+	expInterval = 60 // in seconds
 )
 
 var redisClient *redis.Client
@@ -29,6 +30,11 @@ func TestMain(m *testing.M) {
 	container, err := pool.Run("redis", "5.0-alpine", nil)
 	if err != nil {
 		log.Fatalf("Could not start container: %s", err)
+	}
+
+	// Force remove the container after the interval
+	if err := container.Expire(expInterval); err != nil {
+		log.Printf("Could not expire container: %s", err)
 	}
 
 	if err := pool.Retry(func() error {

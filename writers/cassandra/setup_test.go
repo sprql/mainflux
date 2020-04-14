@@ -14,6 +14,8 @@ import (
 	dockertest "gopkg.in/ory/dockertest.v3"
 )
 
+const expInterval = 60 // in seconds
+
 var logger, _ = log.New(os.Stdout, log.Info.String())
 
 func TestMain(m *testing.M) {
@@ -25,6 +27,11 @@ func TestMain(m *testing.M) {
 	container, err := pool.Run("cassandra", "3.11.3", []string{})
 	if err != nil {
 		logger.Error(fmt.Sprintf("Could not start container: %s", err))
+	}
+
+	// Force remove the container after the interval
+	if err := container.Expire(expInterval); err != nil {
+		logger.Error(fmt.Sprintf("Could not expire container: %s", err))
 	}
 
 	port := container.GetPort("9042/tcp")

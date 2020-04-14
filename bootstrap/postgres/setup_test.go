@@ -16,8 +16,9 @@ import (
 )
 
 const (
-	wrongID    = "0"
-	wrongValue = "wrong-value"
+	wrongID     = "0"
+	wrongValue  = "wrong-value"
+	expInterval = 60 // in seconds
 )
 
 var (
@@ -39,6 +40,11 @@ func TestMain(m *testing.M) {
 	container, err := pool.Run("postgres", "10.2-alpine", cfg)
 	if err != nil {
 		log.Fatalf("Could not start container: %s", err)
+	}
+
+	// Force remove the container after the interval
+	if err := container.Expire(expInterval); err != nil {
+		log.Printf("Could not expire container: %s", err)
 	}
 
 	port := container.GetPort("5432/tcp")

@@ -15,6 +15,8 @@ import (
 	dockertest "gopkg.in/ory/dockertest.v3"
 )
 
+const expInterval = 60 // in seconds
+
 func TestMain(m *testing.M) {
 	pool, err := dockertest.NewPool("")
 	if err != nil {
@@ -28,6 +30,11 @@ func TestMain(m *testing.M) {
 	container, err := pool.Run("mongo", "3.6-jessie", cfg)
 	if err != nil {
 		testLog.Error(fmt.Sprintf("Could not start container: %s", err))
+	}
+
+	// Force remove the container after the interval
+	if err := container.Expire(expInterval); err != nil {
+		testLog.Error(fmt.Sprintf("Could not expire container: %s", err))
 	}
 
 	port = container.GetPort("27017/tcp")
