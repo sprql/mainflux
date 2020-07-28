@@ -51,8 +51,10 @@ paths:
             $ref: "#/definitions/UsersPage"
         400:
           description: Failed due to malformed query parameters.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         500:
           $ref: "#/responses/ServiceError"
   /users:
@@ -76,8 +78,10 @@ paths:
           description: User updated.
         400:
           description: Failed due to malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         500:
           $ref: "#/responses/ServiceError"
   /tokens:
@@ -104,7 +108,7 @@ paths:
             Failed due to malformed JSON.
           schema:
             $ref: "#/definitions/Error"
-        403:
+        401:
           description: |
             Failed due to using invalid credentials.
           schema:

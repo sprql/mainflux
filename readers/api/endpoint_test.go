@@ -154,7 +154,7 @@ func TestReadAll(t *testing.T) {
 		"read page with empty token": {
 			url:    fmt.Sprintf("%s/channels/%s/messages?offset=0&limit=10", ts.URL, chanID),
 			token:  "",
-			status: http.StatusForbidden,
+			status: http.StatusUnauthorized,
 		},
 		"read page with default offset": {
 			url:    fmt.Sprintf("%s/channels/%s/messages?limit=10", ts.URL, chanID),

@@ -27,10 +27,11 @@ const (
 )
 
 var (
-	errInvalidRequest     = errors.New("received invalid request")
-	errUnauthorizedAccess = errors.New("missing or invalid credentials provided")
-	auth                  mainflux.ThingsServiceClient
-	queryFields           = []string{"subtopic", "publisher", "protocol", "name", "value", "v", "vs", "vb", "vd"}
+	errInvalidRequest  = errors.New("received invalid request")
+	errUnauthenticated = errors.New("missing credentials provided")
+	errUnauthorized    = errors.New("unauthorized access")
+	auth               mainflux.ThingsServiceClient
+	queryFields        = []string{"subtopic", "publisher", "protocol", "name", "value", "v", "vs", "vb", "vd"}
 )
 
 // MakeHandler returns a HTTP handler for API endpoints.
@@ -115,7 +116,9 @@ func encodeError(_ context.Context, err error, w http.ResponseWriter) {
 	case errors.Contains(err, nil):
 	case errors.Contains(err, errInvalidRequest):
 		w.WriteHeader(http.StatusBadRequest)
-	case errors.Contains(err, errUnauthorizedAccess):
+	case errors.Contains(err, errUnauthenticated):
+		w.WriteHeader(http.StatusUnauthorized)
+	case errors.Contains(err, errUnauthorized):
 		w.WriteHeader(http.StatusForbidden)
 	default:
 		w.WriteHeader(http.StatusInternalServerError)
@@ -132,7 +135,7 @@ func encodeError(_ context.Context, err error, w http.ResponseWriter) {
 func authorize(r *http.Request, chanID string) error {
 	token := r.Header.Get("Authorization")
 	if token == "" {
-		return errUnauthorizedAccess
+		return errUnauthenticated
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -142,7 +145,7 @@ func authorize(r *http.Request, chanID string) error {
 	if err != nil {
 		e, ok := status.FromError(err)
 		if ok && e.Code() == codes.PermissionDenied {
-			return errUnauthorizedAccess
+			return errUnauthorized
 		}
 		return err
 	}

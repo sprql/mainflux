@@ -58,7 +58,7 @@ func (svc tokenizer) Parse(token string) (authn.Key, error) {
 	c := claims{}
 	_, err := jwt.ParseWithClaims(token, &c, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, authn.ErrUnauthorizedAccess
+			return nil, authn.ErrUnauthenticated
 		}
 		return []byte(svc.secret), nil
 	})
@@ -71,7 +71,7 @@ func (svc tokenizer) Parse(token string) (authn.Key, error) {
 			}
 			return authn.Key{}, errors.Wrap(authn.ErrKeyExpired, err)
 		}
-		return authn.Key{}, errors.Wrap(authn.ErrUnauthorizedAccess, err)
+		return authn.Key{}, errors.Wrap(authn.ErrUnauthenticated, err)
 	}
 
 	return c.toKey(), nil

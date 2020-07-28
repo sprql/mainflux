@@ -133,7 +133,7 @@ func TestAdd(t *testing.T) {
 			desc:   "add a config with wrong credentials",
 			config: config,
 			token:  invalidToken,
-			err:    bootstrap.ErrUnauthorizedAccess,
+			err:    bootstrap.ErrUnauthenticated,
 		},
 		{
 			desc:   "add a config with invalid list of channels",
@@ -180,7 +180,7 @@ func TestView(t *testing.T) {
 			desc:  "view a config with wrong credentials",
 			id:    config.MFThing,
 			token: invalidToken,
-			err:   bootstrap.ErrUnauthorizedAccess,
+			err:   bootstrap.ErrUnauthenticated,
 		},
 	}
 
@@ -232,7 +232,7 @@ func TestUpdate(t *testing.T) {
 			desc:   "update a config with wrong credentials",
 			config: saved,
 			token:  invalidToken,
-			err:    bootstrap.ErrUnauthorizedAccess,
+			err:    bootstrap.ErrUnauthenticated,
 		},
 	}
 
@@ -290,7 +290,7 @@ func TestUpdateCert(t *testing.T) {
 			clientKey:  "newKey",
 			caCert:     "newCert",
 			token:      invalidToken,
-			err:        bootstrap.ErrUnauthorizedAccess,
+			err:        bootstrap.ErrUnauthenticated,
 		},
 	}
 
@@ -364,7 +364,7 @@ func TestUpdateConnections(t *testing.T) {
 			token:       invalidToken,
 			id:          created.MFKey,
 			connections: []string{"2", "3"},
-			err:         bootstrap.ErrUnauthorizedAccess,
+			err:         bootstrap.ErrUnauthenticated,
 		},
 	}
 
@@ -442,7 +442,7 @@ func TestList(t *testing.T) {
 			token:  invalidToken,
 			offset: 0,
 			limit:  10,
-			err:    bootstrap.ErrUnauthorizedAccess,
+			err:    bootstrap.ErrUnauthenticated,
 		},
 		{
 			desc: "list last page",
@@ -501,7 +501,7 @@ func TestRemove(t *testing.T) {
 			desc:  "view a config with wrong credentials",
 			id:    saved.MFThing,
 			token: invalidToken,
-			err:   bootstrap.ErrUnauthorizedAccess,
+			err:   bootstrap.ErrUnauthenticated,
 		},
 		{
 			desc:  "remove an existing config",
@@ -611,7 +611,7 @@ func TestChangeState(t *testing.T) {
 			state: bootstrap.Active,
 			id:    saved.MFThing,
 			token: invalidToken,
-			err:   bootstrap.ErrUnauthorizedAccess,
+			err:   bootstrap.ErrUnauthenticated,
 		},
 		{
 			desc:  "change state of non-existing config",

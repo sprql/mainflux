@@ -21,7 +21,7 @@ func TestAddReqValidation(t *testing.T) {
 			token:       "",
 			externalID:  "external-id",
 			externalKey: "external-key",
-			err:         bootstrap.ErrUnauthorizedAccess,
+			err:         bootstrap.ErrUnauthenticated,
 		},
 		{
 			desc:        "empty external ID",
@@ -62,7 +62,7 @@ func TestEntityReqValidation(t *testing.T) {
 			desc: "empty key",
 			key:  "",
 			id:   "id",
-			err:  bootstrap.ErrUnauthorizedAccess,
+			err:  bootstrap.ErrUnauthenticated,
 		},
 		{
 			desc: "empty id",
@@ -93,7 +93,7 @@ func TestUpdateReqValidation(t *testing.T) {
 			desc: "empty key",
 			key:  "",
 			id:   "id",
-			err:  bootstrap.ErrUnauthorizedAccess,
+			err:  bootstrap.ErrUnauthenticated,
 		},
 		{
 			desc: "empty id",
@@ -125,7 +125,7 @@ func TestUpdateCertReqValidation(t *testing.T) {
 			desc:    "empty key",
 			key:     "",
 			thingID: "thingID",
-			err:     bootstrap.ErrUnauthorizedAccess,
+			err:     bootstrap.ErrUnauthenticated,
 		},
 		{
 			desc:    "empty thing key",
@@ -157,7 +157,7 @@ func TestUpdateConnReqValidation(t *testing.T) {
 			desc: "empty key",
 			key:  "",
 			id:   "id",
-			err:  bootstrap.ErrUnauthorizedAccess,
+			err:  bootstrap.ErrUnauthenticated,
 		},
 		{
 			desc: "empty id",
@@ -191,7 +191,7 @@ func TestListReqValidation(t *testing.T) {
 			key:    "",
 			offset: 0,
 			limit:  1,
-			err:    bootstrap.ErrUnauthorizedAccess,
+			err:    bootstrap.ErrUnauthenticated,
 		},
 		{
 			desc:   "too large limit",
@@ -232,7 +232,7 @@ func TestBootstrapReqValidation(t *testing.T) {
 			desc:      "empty external key",
 			externKey: "",
 			externID:  "id",
-			err:       bootstrap.ErrUnauthorizedAccess,
+			err:       bootstrap.ErrUnauthenticated,
 		},
 		{
 			desc:      "empty external id",
@@ -266,7 +266,7 @@ func TestChangeStateReqValidation(t *testing.T) {
 			key:   "",
 			id:    "id",
 			state: bootstrap.State(1),
-			err:   bootstrap.ErrUnauthorizedAccess,
+			err:   bootstrap.ErrUnauthenticated,
 		},
 		{
 			desc:  "empty id",

@@ -25,9 +25,13 @@ var (
 	// invalid username or password).
 	ErrMalformedEntity = errors.New("malformed entity specification")
 
-	// ErrUnauthorizedAccess indicates missing or invalid credentials provided
+	// ErrUnauthenticated indicates missing or invalid credentials provided
 	// when accessing a protected resource.
-	ErrUnauthorizedAccess = errors.New("missing or invalid credentials provided")
+	ErrUnauthenticated = errors.New("missing or invalid credentials provided")
+
+	// ErrUnauthorized indicates unauthorized access
+	// when accessing a protected resource.
+	ErrUnauthorized = errors.New("unauthorized access")
 
 	// ErrNotFound indicates a non-existent entity request.
 	ErrNotFound = errors.New("non-existent entity")
@@ -122,7 +126,7 @@ func (ts *twinsService) AddTwin(ctx context.Context, token string, twin Twin, de
 
 	res, err := ts.auth.Identify(ctx, &mainflux.Token{Value: token})
 	if err != nil {
-		return Twin{}, ErrUnauthorizedAccess
+		return Twin{}, ErrUnauthenticated
 	}
 
 	twin.ID, err = ts.uuidProvider.ID()
@@ -165,7 +169,7 @@ func (ts *twinsService) UpdateTwin(ctx context.Context, token string, twin Twin,
 
 	_, err = ts.auth.Identify(ctx, &mainflux.Token{Value: token})
 	if err != nil {
-		return ErrUnauthorizedAccess
+		return ErrUnauthenticated
 	}
 
 	tw, err := ts.twins.RetrieveByID(ctx, twin.ID)
@@ -215,7 +219,7 @@ func (ts *twinsService) ViewTwin(ctx context.Context, token, twinID string) (tw 
 
 	_, err = ts.auth.Identify(ctx, &mainflux.Token{Value: token})
 	if err != nil {
-		return Twin{}, ErrUnauthorizedAccess
+		return Twin{}, ErrUnauthenticated
 	}
 
 	twin, err := ts.twins.RetrieveByID(ctx, twinID)
@@ -234,7 +238,7 @@ func (ts *twinsService) RemoveTwin(ctx context.Context, token, twinID string) (e
 
 	_, err = ts.auth.Identify(ctx, &mainflux.Token{Value: token})
 	if err != nil {
-		return ErrUnauthorizedAccess
+		return ErrUnauthenticated
 	}
 
 	if err := ts.twins.Remove(ctx, twinID); err != nil {
@@ -247,7 +251,7 @@ func (ts *twinsService) RemoveTwin(ctx context.Context, token, twinID string) (e
 func (ts *twinsService) ListTwins(ctx context.Context, token string, offset uint64, limit uint64, name string, metadata Metadata) (Page, error) {
 	res, err := ts.auth.Identify(ctx, &mainflux.Token{Value: token})
 	if err != nil {
-		return Page{}, ErrUnauthorizedAccess
+		return Page{}, ErrUnauthenticated
 	}
 
 	return ts.twins.RetrieveAll(ctx, res.GetValue(), offset, limit, name, metadata)
@@ -256,7 +260,7 @@ func (ts *twinsService) ListTwins(ctx context.Context, token string, offset uint
 func (ts *twinsService) ListStates(ctx context.Context, token string, offset uint64, limit uint64, twinID string) (StatesPage, error) {
 	_, err := ts.auth.Identify(ctx, &mainflux.Token{Value: token})
 	if err != nil {
-		return StatesPage{}, ErrUnauthorizedAccess
+		return StatesPage{}, ErrUnauthenticated
 	}
 
 	return ts.states.RetrieveAll(ctx, offset, limit, twinID)

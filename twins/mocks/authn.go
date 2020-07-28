@@ -26,7 +26,7 @@ func (svc authNServiceClient) Identify(ctx context.Context, in *mainflux.Token, 
 	if id, ok := svc.users[in.Value]; ok {
 		return &mainflux.UserID{Value: id}, nil
 	}
-	return nil, users.ErrUnauthorizedAccess
+	return nil, users.ErrUnauthenticated
 }
 
 func (svc *authNServiceClient) Issue(ctx context.Context, in *mainflux.IssueReq, opts ...grpc.CallOption) (*mainflux.Token, error) {

@@ -67,7 +67,7 @@ func TestCreateThings(t *testing.T) {
 				things.Thing{Name: "e"},
 			},
 			token: wrongValue,
-			err:   things.ErrUnauthorizedAccess,
+			err:   things.ErrUnauthenticated,
 		},
 	}
 
@@ -99,7 +99,7 @@ func TestUpdateThing(t *testing.T) {
 			desc:  "update thing with wrong credentials",
 			thing: sth,
 			token: wrongValue,
-			err:   things.ErrUnauthorizedAccess,
+			err:   things.ErrUnauthenticated,
 		},
 		{
 			desc:  "update non-existing thing",
@@ -141,7 +141,7 @@ func TestUpdateKey(t *testing.T) {
 			token: wrongValue,
 			id:    sth.ID,
 			key:   key,
-			err:   things.ErrUnauthorizedAccess,
+			err:   things.ErrUnauthenticated,
 		},
 		{
 			desc:  "update key of non-existing thing",
@@ -176,7 +176,7 @@ func TestViewThing(t *testing.T) {
 		"view thing with wrong credentials": {
 			id:    sth.ID,
 			token: wrongValue,
-			err:   things.ErrUnauthorizedAccess,
+			err:   things.ErrUnauthenticated,
 		},
 		"view non-existing thing": {
 			id:    wrongID,
@@ -252,7 +252,7 @@ func TestListThings(t *testing.T) {
 			offset: 0,
 			limit:  0,
 			size:   0,
-			err:    things.ErrUnauthorizedAccess,
+			err:    things.ErrUnauthenticated,
 		},
 		"list with metadata": {
 			token:    token,
@@ -359,7 +359,7 @@ func TestListThingsByChannel(t *testing.T) {
 			limit:     0,
 			connected: true,
 			size:      0,
-			err:       things.ErrUnauthorizedAccess,
+			err:       things.ErrUnauthenticated,
 		},
 		"list things by non-existent channel with wrong credentials": {
 			token:     token,
@@ -404,7 +404,7 @@ func TestRemoveThing(t *testing.T) {
 			desc:  "remove thing with wrong credentials",
 			id:    sth.ID,
 			token: wrongValue,
-			err:   things.ErrUnauthorizedAccess,
+			err:   things.ErrUnauthenticated,
 		},
 		{
 			desc:  "remove existing thing",
@@ -458,7 +458,7 @@ func TestCreateChannels(t *testing.T) {
 				things.Channel{Name: "e"},
 			},
 			token: wrongValue,
-			err:   things.ErrUnauthorizedAccess,
+			err:   things.ErrUnauthenticated,
 		},
 	}
 
@@ -490,7 +490,7 @@ func TestUpdateChannel(t *testing.T) {
 			desc:    "update channel with wrong credentials",
 			channel: sch,
 			token:   wrongValue,
-			err:     things.ErrUnauthorizedAccess,
+			err:     things.ErrUnauthenticated,
 		},
 		{
 			desc:    "update non-existing channel",
@@ -525,7 +525,7 @@ func TestViewChannel(t *testing.T) {
 		"view channel with wrong credentials": {
 			id:    sch.ID,
 			token: wrongValue,
-			err:   things.ErrUnauthorizedAccess,
+			err:   things.ErrUnauthenticated,
 		},
 		"view non-existing channel": {
 			id:    wrongID,
@@ -603,7 +603,7 @@ func TestListChannels(t *testing.T) {
 			offset: 0,
 			limit:  0,
 			size:   0,
-			err:    things.ErrUnauthorizedAccess,
+			err:    things.ErrUnauthenticated,
 		},
 		"list with existing name": {
 			token:  token,
@@ -726,7 +726,7 @@ func TestListChannelsByThing(t *testing.T) {
 			limit:     0,
 			connected: true,
 			size:      0,
-			err:       things.ErrUnauthorizedAccess,
+			err:       things.ErrUnauthenticated,
 		},
 		"list channels by non-existent thing": {
 			token:     token,
@@ -771,7 +771,7 @@ func TestRemoveChannel(t *testing.T) {
 			desc:  "remove channel with wrong credentials",
 			id:    sch.ID,
 			token: wrongValue,
-			err:   things.ErrUnauthorizedAccess,
+			err:   things.ErrUnauthenticated,
 		},
 		{
 			desc:  "remove existing channel",
@@ -826,7 +826,7 @@ func TestConnect(t *testing.T) {
 			token:   wrongValue,
 			chanID:  sch.ID,
 			thingID: sth.ID,
-			err:     things.ErrUnauthorizedAccess,
+			err:     things.ErrUnauthenticated,
 		},
 		{
 			desc:    "connect thing to non-existing channel",
@@ -885,7 +885,7 @@ func TestDisconnect(t *testing.T) {
 			token:   wrongValue,
 			chanID:  sch.ID,
 			thingID: sth.ID,
-			err:     things.ErrUnauthorizedAccess,
+			err:     things.ErrUnauthenticated,
 		},
 		{
 			desc:    "disconnect from non-existing channel",
@@ -932,12 +932,12 @@ func TestCanAccessByKey(t *testing.T) {
 		"not-connected cannot access": {
 			token:   wrongValue,
 			channel: sch.ID,
-			err:     things.ErrUnauthorizedAccess,
+			err:     things.ErrUnauthorized,
 		},
 		"access to non-existing channel": {
 			token:   sth.Key,
 			channel: wrongID,
-			err:     things.ErrUnauthorizedAccess,
+			err:     things.ErrUnauthorized,
 		},
 	}
 
@@ -969,12 +969,12 @@ func TestCanAccessByID(t *testing.T) {
 		"not-connected cannot access": {
 			thingID: wrongValue,
 			channel: sch.ID,
-			err:     things.ErrUnauthorizedAccess,
+			err:     things.ErrUnauthorized,
 		},
 		"access to non-existing channel": {
 			thingID: sth.ID,
 			channel: wrongID,
-			err:     things.ErrUnauthorizedAccess,
+			err:     things.ErrUnauthorized,
 		},
 	}
 
@@ -1003,7 +1003,7 @@ func TestIdentify(t *testing.T) {
 		"identify non-existing thing": {
 			token: wrongValue,
 			id:    wrongID,
-			err:   things.ErrUnauthorizedAccess,
+			err:   things.ErrUnauthenticated,
 		},
 	}
 

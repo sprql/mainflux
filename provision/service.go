@@ -226,7 +226,7 @@ func (ps *provisionService) Cert(token, thingID, daysValid string, keyBits int) 
 
 	th, err := ps.sdk.Thing(thingID, token)
 	if err != nil {
-		return "", "", errors.Wrap(SDK.ErrUnauthorized, err)
+		return "", "", errors.Wrap(SDK.ErrUnauthenticated, err)
 	}
 	cert, err := ps.sdk.IssueCert(th.ID, ps.conf.Certs.KeyBits, ps.conf.Certs.KeyType, ps.conf.Certs.HoursValid, token)
 	return cert.ClientCert, cert.ClientKey, err

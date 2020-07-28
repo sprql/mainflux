@@ -25,7 +25,7 @@ type addTwinReq struct {
 
 func (req addTwinReq) validate() error {
 	if req.token == "" {
-		return twins.ErrUnauthorizedAccess
+		return twins.ErrUnauthenticated
 	}
 
 	if len(req.Name) > maxNameSize {
@@ -45,7 +45,7 @@ type updateTwinReq struct {
 
 func (req updateTwinReq) validate() error {
 	if req.token == "" {
-		return twins.ErrUnauthorizedAccess
+		return twins.ErrUnauthenticated
 	}
 
 	if req.id == "" {
@@ -66,7 +66,7 @@ type viewTwinReq struct {
 
 func (req viewTwinReq) validate() error {
 	if req.token == "" {
-		return twins.ErrUnauthorizedAccess
+		return twins.ErrUnauthenticated
 	}
 
 	if req.id == "" {
@@ -86,7 +86,7 @@ type listReq struct {
 
 func (req *listReq) validate() error {
 	if req.token == "" {
-		return twins.ErrUnauthorizedAccess
+		return twins.ErrUnauthenticated
 	}
 
 	if req.limit == 0 || req.limit > maxLimitSize {
@@ -109,7 +109,7 @@ type listStatesReq struct {
 
 func (req *listStatesReq) validate() error {
 	if req.token == "" {
-		return twins.ErrUnauthorizedAccess
+		return twins.ErrUnauthenticated
 	}
 
 	if req.id == "" {

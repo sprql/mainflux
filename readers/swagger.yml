@@ -30,8 +30,10 @@ paths:
             $ref: "#/definitions/MessagesPage"
         400:
           description: Failed due to malformed query parameters.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         500:
           $ref: "#/responses/ServiceError"
 

@@ -61,7 +61,7 @@ func (sdk mfSDK) RemoveCert(id, token string) error {
 	case http.StatusNoContent:
 		return nil
 	case http.StatusForbidden:
-		return ErrUnauthorized
+		return ErrUnauthenticated
 	default:
 		return ErrCertsRemove
 	}

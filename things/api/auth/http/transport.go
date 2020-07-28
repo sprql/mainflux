@@ -119,7 +119,9 @@ func encodeError(_ context.Context, err error, w http.ResponseWriter) {
 	w.Header().Set("Content-Type", contentType)
 
 	switch err {
-	case things.ErrUnauthorizedAccess:
+	case things.ErrUnauthenticated:
+		w.WriteHeader(http.StatusUnauthorized)
+	case things.ErrUnauthorized:
 		w.WriteHeader(http.StatusForbidden)
 	case errUnsupportedContentType:
 		w.WriteHeader(http.StatusUnsupportedMediaType)

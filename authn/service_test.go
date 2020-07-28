@@ -73,7 +73,7 @@ func TestIssue(t *testing.T) {
 				IssuedAt: time.Now(),
 			},
 			issuer: "",
-			err:    authn.ErrUnauthorizedAccess,
+			err:    authn.ErrUnauthenticated,
 		},
 		{
 			desc: "issue API key no issue time",
@@ -140,7 +140,7 @@ func TestRevoke(t *testing.T) {
 			desc:   "revoke unauthorized",
 			id:     newKey.ID,
 			issuer: "",
-			err:    authn.ErrUnauthorizedAccess,
+			err:    authn.ErrUnauthenticated,
 		},
 	}
 
@@ -189,19 +189,19 @@ func TestRetrieve(t *testing.T) {
 			desc:   "retrieve unauthorized",
 			id:     newKey.ID,
 			issuer: "wrong",
-			err:    authn.ErrUnauthorizedAccess,
+			err:    authn.ErrUnauthenticated,
 		},
 		{
 			desc:   "retrieve with user key",
 			id:     newKey.ID,
 			issuer: userKey.Secret,
-			err:    authn.ErrUnauthorizedAccess,
+			err:    authn.ErrUnauthenticated,
 		},
 		{
 			desc:   "retrieve with reset key",
 			id:     newKey.ID,
 			issuer: resetKey.Secret,
-			err:    authn.ErrUnauthorizedAccess,
+			err:    authn.ErrUnauthenticated,
 		},
 	}
 
@@ -225,7 +225,7 @@ func TestIdentify(t *testing.T) {
 	expKey, err := svc.Issue(context.Background(), loginKey.Secret, authn.Key{Type: authn.APIKey, IssuedAt: time.Now(), ExpiresAt: exp1})
 	assert.Nil(t, err, fmt.Sprintf("Issuing expired user key expected to succeed: %s", err))
 
-	invalidKey, err := svc.Issue(context.Background(), loginKey.Secret, authn.Key{Type: 22, IssuedAt: time.Now()})
+	invalidTypeKey, err := svc.Issue(context.Background(), loginKey.Secret, authn.Key{Type: 22, IssuedAt: time.Now()})
 	assert.Nil(t, err, fmt.Sprintf("Issuing user key expected to succeed: %s", err))
 
 	cases := []struct {
@@ -259,16 +259,16 @@ func TestIdentify(t *testing.T) {
 			err:  authn.ErrKeyExpired,
 		},
 		{
-			desc: "identify expired key",
-			key:  invalidKey.Secret,
+			desc: "identify invalid type key",
+			key:  invalidTypeKey.Secret,
 			id:   "",
-			err:  authn.ErrUnauthorizedAccess,
+			err:  authn.ErrUnauthenticated,
 		},
 		{
 			desc: "identify invalid key",
 			key:  "invalid",
 			id:   "",
-			err:  authn.ErrUnauthorizedAccess,
+			err:  authn.ErrUnauthenticated,
 		},
 	}
 

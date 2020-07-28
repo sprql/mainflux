@@ -51,7 +51,7 @@ func TestAddTwin(t *testing.T) {
 			desc:  "add twin with wrong credentials",
 			twin:  twin,
 			token: wrongToken,
-			err:   twins.ErrUnauthorizedAccess,
+			err:   twins.ErrUnauthenticated,
 		},
 	}
 
@@ -89,7 +89,7 @@ func TestUpdateTwin(t *testing.T) {
 			desc:  "update twin with wrong credentials",
 			twin:  saved,
 			token: wrongToken,
-			err:   twins.ErrUnauthorizedAccess,
+			err:   twins.ErrUnauthenticated,
 		},
 		{
 			desc:  "update non-existing twin",
@@ -125,7 +125,7 @@ func TestViewTwin(t *testing.T) {
 		"view twin with wrong credentials": {
 			id:    saved.ID,
 			token: wrongToken,
-			err:   twins.ErrUnauthorizedAccess,
+			err:   twins.ErrUnauthenticated,
 		},
 		"view non-existing twin": {
 			id:    wrongID,
@@ -186,7 +186,7 @@ func TestListTwins(t *testing.T) {
 			token:  wrongToken,
 			limit:  0,
 			offset: n,
-			err:    twins.ErrUnauthorizedAccess,
+			err:    twins.ErrUnauthenticated,
 		},
 	}
 
@@ -215,7 +215,7 @@ func TestRemoveTwin(t *testing.T) {
 			desc:  "remove twin with wrong credentials",
 			id:    saved.ID,
 			token: wrongToken,
-			err:   twins.ErrUnauthorizedAccess,
+			err:   twins.ErrUnauthenticated,
 		},
 		{
 			desc:  "remove existing twin",
@@ -390,7 +390,7 @@ func TestListStates(t *testing.T) {
 			offset: 0,
 			limit:  10,
 			size:   0,
-			err:    twins.ErrUnauthorizedAccess,
+			err:    twins.ErrUnauthenticated,
 		},
 		{
 			desc:   "get a list with id of non-existent twin",

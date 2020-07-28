@@ -34,7 +34,7 @@ const (
 var (
 	user           = users.User{Email: "user@example.com", Password: "password"}
 	notFoundRes    = toJSON(errorRes{users.ErrUserNotFound.Error()})
-	unauthRes      = toJSON(errorRes{users.ErrUnauthorizedAccess.Error()})
+	unauthRes      = toJSON(errorRes{users.ErrUnauthenticated.Error()})
 	malformedRes   = toJSON(errorRes{users.ErrMalformedEntity.Error()})
 	unsupportedRes = toJSON(errorRes{api.ErrUnsupportedContentType.Error()})
 	failDecodeRes  = toJSON(errorRes{api.ErrFailedDecode.Error()})
@@ -157,9 +157,9 @@ func TestLogin(t *testing.T) {
 		res         string
 	}{
 		{"login with valid credentials", data, contentType, http.StatusCreated, tokenData},
-		{"login with invalid credentials", invalidData, contentType, http.StatusForbidden, unauthRes},
+		{"login with invalid credentials", invalidData, contentType, http.StatusUnauthorized, unauthRes},
 		{"login with invalid email address", invalidEmailData, contentType, http.StatusBadRequest, malformedRes},
-		{"login non-existent user", nonexistentData, contentType, http.StatusForbidden, unauthRes},
+		{"login non-existent user", nonexistentData, contentType, http.StatusUnauthorized, unauthRes},
 		{"login with invalid request format", "{", contentType, http.StatusBadRequest, malformedRes},
 		{"login with empty JSON request", "{}", contentType, http.StatusBadRequest, malformedRes},
 		{"login with empty request", "", contentType, http.StatusBadRequest, malformedRes},
@@ -202,7 +202,7 @@ func TestViewUser(t *testing.T) {
 		res    string
 	}{
 		{"user info with valid token", token, http.StatusOK, ""},
-		{"user info with invalid token", "", http.StatusForbidden, ""},
+		{"user info with invalid token", "", http.StatusUnauthorized, ""},
 	}
 
 	for _, tc := range cases {
@@ -325,7 +325,7 @@ func TestPasswordReset(t *testing.T) {
 		tok         string
 	}{
 		{"password reset with valid token", reqExisting, contentType, http.StatusCreated, expectedSuccess, token},
-		{"password reset with invalid token", reqNoExist, contentType, http.StatusForbidden, unauthRes, token},
+		{"password reset with invalid token", reqNoExist, contentType, http.StatusUnauthorized, unauthRes, token},
 		{"password reset with confirm password not matching", reqPassNoMatch, contentType, http.StatusBadRequest, malformedRes, token},
 		{"password reset request with invalid request format", "{", contentType, http.StatusBadRequest, failDecodeRes, token},
 		{"password reset request with empty JSON request", "{}", contentType, http.StatusBadRequest, malformedRes, token},
@@ -374,7 +374,7 @@ func TestPasswordChange(t *testing.T) {
 		Password string `json:"password,omitempty"`
 		OldPassw string `json:"old_password,omitempty"`
 	}{}
-	resData.Msg = users.ErrUnauthorizedAccess.Error()
+	resData.Msg = users.ErrUnauthenticated.Error()
 
 	svc.Register(context.Background(), user)
 
@@ -388,7 +388,7 @@ func TestPasswordChange(t *testing.T) {
 	reqData.OldPassw = "wrong"
 	reqWrongPass := toJSON(reqData)
 
-	resData.Msg = users.ErrUnauthorizedAccess.Error()
+	resData.Msg = users.ErrUnauthenticated.Error()
 
 	cases := []struct {
 		desc        string
@@ -399,8 +399,8 @@ func TestPasswordChange(t *testing.T) {
 		tok         string
 	}{
 		{"password change with valid token", dataResExisting, contentType, http.StatusCreated, expectedSuccess, token},
-		{"password change with invalid token", reqNoExist, contentType, http.StatusForbidden, unauthRes, ""},
-		{"password change with invalid old password", reqWrongPass, contentType, http.StatusForbidden, unauthRes, token},
+		{"password change with invalid token", reqNoExist, contentType, http.StatusUnauthorized, unauthRes, ""},
+		{"password change with invalid old password", reqWrongPass, contentType, http.StatusUnauthorized, unauthRes, token},
 		{"password change with empty JSON request", "{}", contentType, http.StatusBadRequest, malformedRes, token},
 		{"password change empty request", "", contentType, http.StatusBadRequest, failDecodeRes, token},
 		{"password change missing content type", dataResExisting, "", http.StatusUnsupportedMediaType, unsupportedRes, token},

@@ -35,7 +35,7 @@ func (repo singleUserRepo) Issue(ctx context.Context, req *mainflux.IssueReq, op
 	defer cancel()
 
 	if repo.token != req.GetIssuer() {
-		return nil, things.ErrUnauthorizedAccess
+		return nil, things.ErrUnauthorized
 	}
 
 	return &mainflux.Token{Value: repo.token}, nil
@@ -46,7 +46,7 @@ func (repo singleUserRepo) Identify(ctx context.Context, token *mainflux.Token, 
 	defer cancel()
 
 	if repo.token != token.GetValue() {
-		return nil, things.ErrUnauthorizedAccess
+		return nil, things.ErrUnauthorized
 	}
 
 	return &mainflux.UserID{Value: repo.email}, nil

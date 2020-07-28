@@ -72,7 +72,7 @@ func (crm *configRepositoryMock) RetrieveByID(token, id string) (bootstrap.Confi
 		return bootstrap.Config{}, bootstrap.ErrNotFound
 	}
 	if c.Owner != token {
-		return bootstrap.Config{}, bootstrap.ErrUnauthorizedAccess
+		return bootstrap.Config{}, bootstrap.ErrUnauthenticated
 	}
 
 	return c, nil
@@ -226,7 +226,7 @@ func (crm *configRepositoryMock) ChangeState(token, id string, state bootstrap.S
 		return bootstrap.ErrNotFound
 	}
 	if config.Owner != token {
-		return bootstrap.ErrUnauthorizedAccess
+		return bootstrap.ErrUnauthenticated
 	}
 
 	config.State = state

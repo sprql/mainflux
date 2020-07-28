@@ -26,7 +26,7 @@ func (svc authServiceMock) Identify(ctx context.Context, in *mainflux.Token, opt
 	if id, ok := svc.users[in.Value]; ok {
 		return &mainflux.UserID{Value: id}, nil
 	}
-	return nil, users.ErrUnauthorizedAccess
+	return nil, users.ErrUnauthenticated
 }
 
 func (svc authServiceMock) Issue(ctx context.Context, in *mainflux.IssueReq, opts ...grpc.CallOption) (*mainflux.Token, error) {
@@ -36,5 +36,5 @@ func (svc authServiceMock) Issue(ctx context.Context, in *mainflux.IssueReq, opt
 			return &mainflux.Token{Value: id}, nil
 		}
 	}
-	return nil, users.ErrUnauthorizedAccess
+	return nil, users.ErrUnauthenticated
 }

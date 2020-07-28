@@ -30,7 +30,7 @@ type issueReq struct {
 
 func (req issueReq) validate() error {
 	if req.issuer == "" {
-		return authn.ErrUnauthorizedAccess
+		return authn.ErrUnauthenticated
 	}
 	if req.keyType != authn.UserKey &&
 		req.keyType != authn.APIKey &&

@@ -57,7 +57,7 @@ func TestPublish(t *testing.T) {
 	chanID := "1"
 	contentType := "application/senml+json"
 	token := "auth_token"
-	invalidToken := "invalid_token"
+	unauthorizedToken := "invalid_token"
 	msg := `[{"n":"current","t":-1,"v":1.6}]`
 	thingsClient := mocks.NewThingsClient(map[string]string{token: chanID})
 	svc := newService(thingsClient)
@@ -83,13 +83,13 @@ func TestPublish(t *testing.T) {
 			msg:         msg,
 			contentType: contentType,
 			auth:        "",
-			status:      http.StatusForbidden,
+			status:      http.StatusUnauthorized,
 		},
-		"publish message with invalid authorization token": {
+		"publish message with unauthorized token": {
 			chanID:      chanID,
 			msg:         msg,
 			contentType: contentType,
-			auth:        invalidToken,
+			auth:        unauthorizedToken,
 			status:      http.StatusForbidden,
 		},
 		"publish message without content type": {

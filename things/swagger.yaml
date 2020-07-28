@@ -33,8 +33,10 @@ paths:
               description: Created thing's relative URL (i.e. /things/{thingId}).
         400:
           description: Failed due to malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         415:
           description: Missing or invalid content type.
         500:
@@ -61,8 +63,10 @@ paths:
             $ref: "#/definitions/ThingsPage"
         400:
           description: Failed due to malformed query parameters.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         500:
           $ref: "#/responses/ServiceError"
   /things/bulk:
@@ -86,8 +90,10 @@ paths:
           description: Things registered.
         400:
           description: Failed due to malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         415:
           description: Missing or invalid content type.
         500:
@@ -112,8 +118,10 @@ paths:
             $ref: "#/definitions/ThingsPage"
         400:
           description: Failed due to malformed query parameters.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         500:
           $ref: "#/responses/ServiceError"
   /things/{thingId}:
@@ -129,8 +137,10 @@ paths:
           description: Data retrieved.
           schema:
             $ref: "#/definitions/ThingRes"
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
           description: Thing does not exist.
         500:
@@ -157,8 +167,10 @@ paths:
           description: Thing updated.
         400:
           description: Failed due to malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
           description: Thing does not exist.
         415:
@@ -180,8 +192,10 @@ paths:
           description: Thing removed.
         400:
           description: Failed due to malformed thing's ID.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         500:
           $ref: "#/responses/ServiceError"
   /things/{thingId}/key:
@@ -205,8 +219,10 @@ paths:
           description: Thing key updated.
         400:
           description: Failed due to malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
           description: Thing does not exist.
         409:
@@ -240,8 +256,10 @@ paths:
               description: Created channel's relative URL (i.e. /channels/{chanId}).
         400:
           description: Failed due to malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         415:
           description: Missing or invalid content type.
         500:
@@ -267,8 +285,10 @@ paths:
             $ref: "#/definitions/ChannelsPage"
         400:
           description: Failed due to malformed query parameters.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         500:
           $ref: "#/responses/ServiceError"
   /channels/bulk:
@@ -292,8 +312,10 @@ paths:
           description: Channels registered.
         400:
           description: Failed due to malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         415:
           description: Missing or invalid content type.
         500:
@@ -311,8 +333,10 @@ paths:
           description: Data retrieved.
           schema:
             $ref: "#/definitions/ChannelRes"
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
           description: Channel does not exist.
         500:
@@ -339,8 +363,10 @@ paths:
           description: Channel updated.
         400:
           description: Failed due to malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
           description: Channel does not exist.
         415:
@@ -362,8 +388,10 @@ paths:
           description: Channel removed.
         400:
           description: Failed due to malformed channel's ID.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         500:
           $ref: "#/responses/ServiceError"
   /things/{thingId}/channels:
@@ -386,8 +414,10 @@ paths:
             $ref: "#/definitions/ChannelsPage"
         400:
           description: Failed due to malformed query parameters.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         500:
           $ref: "#/responses/ServiceError"
   /channels/{chanId}/things/{thingId}:
@@ -405,8 +435,10 @@ paths:
       responses:
         200:
           description: Thing connected.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
           description: Channel or thing does not exist.
         500:
@@ -425,8 +457,10 @@ paths:
       responses:
         204:
           description: Thing disconnected.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
           description: Channel or thing does not exist.
         500:
@@ -508,8 +542,10 @@ paths:
           description: Thing ID returned.
           schema:
             $ref: "#/definitions/Identity"
+        401:
+          description: Missing or invalid access token provided.
         403:
-          description: Thing with specified key doesn't exist.
+          description: Unauthorized access.
         415:
           description: Missing or invalid content type.
         500:

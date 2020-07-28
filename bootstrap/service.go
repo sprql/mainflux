@@ -22,9 +22,13 @@ var (
 	// ErrMalformedEntity indicates malformed entity specification.
 	ErrMalformedEntity = errors.New("malformed entity specification")
 
-	// ErrUnauthorizedAccess indicates missing or invalid credentials provided
+	// ErrUnauthenticated indicates missing or invalid credentials provided
 	// when accessing a protected resource.
-	ErrUnauthorizedAccess = errors.New("missing or invalid credentials provided")
+	ErrUnauthenticated = errors.New("missing or invalid credentials provided")
+
+	// ErrUnauthorized indicates unauthorized access
+	// when accessing a protected resource.
+	ErrUnauthorized = errors.New("unauthorized access")
 
 	// ErrConflict indicates that entity with the same ID or external ID already exists.
 	ErrConflict = errors.New("entity already exists")
@@ -385,7 +389,7 @@ func (bs bootstrapService) identify(token string) (string, error) {
 
 	res, err := bs.auth.Identify(ctx, &mainflux.Token{Value: token})
 	if err != nil {
-		return "", ErrUnauthorizedAccess
+		return "", ErrUnauthenticated
 	}
 
 	return res.GetValue(), nil

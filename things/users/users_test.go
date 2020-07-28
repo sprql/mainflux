@@ -30,7 +30,7 @@ func TestIdentify(t *testing.T) {
 		"identify non-existing user": {
 			token: "non-existing",
 			id:    "",
-			err:   things.ErrUnauthorizedAccess,
+			err:   things.ErrUnauthorized,
 		},
 		"identify existing user": {
 			token: token,
@@ -57,7 +57,7 @@ func TestIssue(t *testing.T) {
 		"issue key unauthorized": {
 			token: "non-existing",
 			id:    "",
-			err:   things.ErrUnauthorizedAccess,
+			err:   things.ErrUnauthorized,
 		},
 		"issue key": {
 			token: token,

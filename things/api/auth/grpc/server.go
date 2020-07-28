@@ -103,8 +103,10 @@ func encodeError(err error) error {
 		return nil
 	case things.ErrMalformedEntity:
 		return status.Error(codes.InvalidArgument, "received invalid can access request")
-	case things.ErrUnauthorizedAccess:
-		return status.Error(codes.PermissionDenied, "missing or invalid credentials provided")
+	case things.ErrUnauthenticated:
+		return status.Error(codes.Unauthenticated, "missing or invalid credentials provided")
+	case things.ErrUnauthorized:
+		return status.Error(codes.PermissionDenied, "unauthorized access")
 	default:
 		return status.Error(codes.Internal, "internal server error")
 	}

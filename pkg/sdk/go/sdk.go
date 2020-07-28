@@ -24,8 +24,8 @@ const (
 const minPassLen = 8
 
 var (
-	// ErrUnauthorized indicates that entity creation failed.
-	ErrUnauthorized = errors.New("unauthorized, missing credentials")
+	// ErrUnauthenticated indicates that entity creation failed.
+	ErrUnauthenticated = errors.New("unauthenticated, missing credentials")
 
 	// ErrFailedCreation indicates that entity creation failed.
 	ErrFailedCreation = errors.New("failed to create entity")

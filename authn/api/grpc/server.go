@@ -81,7 +81,7 @@ func encodeError(err error) error {
 		return nil
 	case errors.Contains(err, authn.ErrMalformedEntity):
 		return status.Error(codes.InvalidArgument, "received invalid token request")
-	case errors.Contains(err, authn.ErrUnauthorizedAccess):
+	case errors.Contains(err, authn.ErrUnauthenticated):
 		return status.Error(codes.Unauthenticated, err.Error())
 	case errors.Contains(err, authn.ErrKeyExpired):
 		return status.Error(codes.Unauthenticated, err.Error())

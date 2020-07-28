@@ -31,7 +31,7 @@ func newMessageServer(svc adapter.Service) *httptest.Server {
 func TestSendMessage(t *testing.T) {
 	chanID := "1"
 	atoken := "auth_token"
-	invalidToken := "invalid_token"
+	unauthorizedToken := "invalid_token"
 	msg := `[{"n":"current","t":-1,"v":1.6}]`
 	thingsClient := mocks.NewThingsClient(map[string]string{atoken: chanID})
 	pub := newMessageService(thingsClient)
@@ -64,12 +64,12 @@ func TestSendMessage(t *testing.T) {
 			chanID: chanID,
 			msg:    msg,
 			auth:   "",
-			err:    createError(sdk.ErrFailedPublish, http.StatusForbidden),
+			err:    createError(sdk.ErrFailedPublish, http.StatusUnauthorized),
 		},
-		"publish message with invalid authorization token": {
+		"publish message with unauthorized token": {
 			chanID: chanID,
 			msg:    msg,
-			auth:   invalidToken,
+			auth:   unauthorizedToken,
 			err:    createError(sdk.ErrFailedPublish, http.StatusForbidden),
 		},
 		"publish message with wrong content type": {

@@ -18,8 +18,13 @@ const (
 )
 
 var (
-	// ErrUnauthorizedAccess represents unauthorized access.
-	ErrUnauthorizedAccess = errors.New("unauthorized access")
+	// ErrUnauthenticated indicates missing or invalid
+	// authentication credentials.
+	ErrUnauthenticated = errors.New("unauthenticated access")
+
+	// ErrUnauthorized indicates unauthorized access
+	// when accessing a protected resource.
+	ErrUnauthorized = errors.New("unauthorized access")
 
 	// ErrMalformedEntity indicates malformed entity specification (e.g.
 	// invalid owner or ID).
@@ -129,11 +134,11 @@ func (svc service) Identify(ctx context.Context, token string) (string, error) {
 		return c.Issuer, nil
 	case RecoveryKey, UserKey:
 		if c.Issuer != issuerName {
-			return "", ErrUnauthorizedAccess
+			return "", ErrUnauthenticated
 		}
 		return c.Secret, nil
 	default:
-		return "", ErrUnauthorizedAccess
+		return "", ErrUnauthenticated
 	}
 }
 
@@ -183,11 +188,11 @@ func (svc service) login(token string) (string, error) {
 	}
 	// Only user key token is valid for login.
 	if c.Type != UserKey {
-		return "", ErrUnauthorizedAccess
+		return "", ErrUnauthenticated
 	}
 
 	if c.Secret == "" {
-		return "", ErrUnauthorizedAccess
+		return "", ErrUnauthenticated
 	}
 	return c.Secret, nil
 }

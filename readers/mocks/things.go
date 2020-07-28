@@ -14,7 +14,10 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-var errUnauthorized = status.Error(codes.PermissionDenied, "missing or invalid credentials provided")
+var (
+	errUnauthenticated = status.Error(codes.Unauthenticated, "missing credentials provided")
+	errUnauthorized    = status.Error(codes.PermissionDenied, "unauthorized access")
+)
 
 var _ mainflux.ThingsServiceClient = (*thingsServiceMock)(nil)
 
@@ -32,7 +35,7 @@ func (svc thingsServiceMock) CanAccessByKey(ctx context.Context, in *mainflux.Ac
 	}
 
 	if token == "" {
-		return nil, errUnauthorized
+		return nil, errUnauthenticated
 	}
 
 	return &mainflux.ThingID{Value: token}, nil

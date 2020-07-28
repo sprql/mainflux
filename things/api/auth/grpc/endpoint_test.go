@@ -161,7 +161,7 @@ func TestIdentify(t *testing.T) {
 		"identify non-existent thing": {
 			key:  wrong,
 			id:   wrongID,
-			code: codes.PermissionDenied,
+			code: codes.Unauthenticated,
 		},
 	}
 

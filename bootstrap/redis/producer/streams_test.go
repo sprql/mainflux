@@ -370,7 +370,7 @@ func TestRemove(t *testing.T) {
 			desc:  "remove config with invalid credentials",
 			id:    saved.MFThing,
 			token: "",
-			err:   bootstrap.ErrUnauthorizedAccess,
+			err:   bootstrap.ErrUnauthenticated,
 			event: nil,
 		},
 	}
@@ -506,7 +506,7 @@ func TestChangeState(t *testing.T) {
 			id:    saved.MFThing,
 			token: "",
 			state: bootstrap.Inactive,
-			err:   bootstrap.ErrUnauthorizedAccess,
+			err:   bootstrap.ErrUnauthenticated,
 			event: nil,
 		},
 	}

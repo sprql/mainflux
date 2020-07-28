@@ -33,8 +33,10 @@ paths:
               description: Created twin's relative URL (i.e. /twins/{twinID}).
         400:
           description: Failed due to malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         415:
           description: Missing or invalid content type.
         500:
@@ -59,12 +61,14 @@ paths:
           schema:
             $ref: '#/definitions/TwinsPage'
         400:
-          description: Failed due to malformed query parameters.            
-        403:
+          description: Failed due to malformed query parameters.
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         500:
           $ref: '#/responses/ServiceError'
-  
+
   /twins/{twinID}:
     get:
       summary: Retrieves twin info
@@ -79,9 +83,11 @@ paths:
           schema:
             $ref: '#/definitions/TwinRes'
         400:
-          description: Failed due to malformed twin's ID.            
-        403:
+          description: Failed due to malformed twin's ID.
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
           description: Twin does not exist.
         500:
@@ -107,8 +113,10 @@ paths:
           description: Twin updated.
         400:
           description: Failed due to malformed twin's ID or malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
           description: Twin does not exist.
         415:
@@ -128,13 +136,15 @@ paths:
           description: Twin removed.
         400:
           description: Failed due to malformed twin's ID.
-        403:
+        401:
           description: Missing or invalid access token provided
+        403:
+          description: Unauthorized access.
         404:
-          description: Twin does not exist.          
+          description: Twin does not exist.
         500:
           $ref: '#/responses/ServiceError'
-  
+
   /states/{twinID}:
     get:
       summary: Retrieves states of twin with id twinID
@@ -156,12 +166,14 @@ paths:
             $ref: '#/definitions/StatesPage'
         400:
           description: Failed due to malformed query parameters.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
-          description: Twin does not exist.          
+          description: Twin does not exist.
         500:
-          $ref: '#/responses/ServiceError'  
+          $ref: '#/responses/ServiceError'
 
 responses:
   ServiceError:
@@ -196,10 +208,10 @@ parameters:
     description: Twin name
     in: query
     type: string
-    required: false    
+    required: false
   Metadata:
     name: metadata
-    description: | 
+    description: |
       Metadata filter. Filtering is performed matching the parameter with
       metadata on top level. Parameter is json.
     in: query
@@ -329,7 +341,7 @@ definitions:
         minItems: 0
         uniqueItems: true
         items:
-          $ref: '#/definitions/StateRes' 
+          $ref: '#/definitions/StateRes'
       total:
         type: integer
         description: Total number of items.

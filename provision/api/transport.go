@@ -21,7 +21,7 @@ const (
 
 var (
 	errUnsupportedContentType = errors.New("unsupported content type")
-	errUnauthorized           = errors.New("missing or invalid credentials provided")
+	errUnauthenticated        = errors.New("missing or invalid credentials provided")
 	errMalformedEntity        = errors.New("malformed entity")
 	errConflict               = errors.New("entity already exists")
 )

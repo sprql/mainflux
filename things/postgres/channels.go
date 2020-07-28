@@ -382,7 +382,7 @@ func (cr channelRepository) hasThing(ctx context.Context, chanID, thingID string
 	}
 
 	if !exists {
-		return things.ErrUnauthorizedAccess
+		return things.ErrUnauthorized
 	}
 
 	return nil

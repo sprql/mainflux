@@ -9,7 +9,7 @@ type addThingReq struct {
 
 func (req addThingReq) validate() error {
 	if req.ExternalID == "" || req.ExternalKey == "" {
-		return errUnauthorized
+		return errUnauthenticated
 	}
 	return nil
 }

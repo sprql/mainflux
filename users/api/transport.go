@@ -209,8 +209,8 @@ func encodeError(_ context.Context, err error, w http.ResponseWriter) {
 		switch {
 		case errors.Contains(errorVal, users.ErrMalformedEntity):
 			w.WriteHeader(http.StatusBadRequest)
-		case errors.Contains(errorVal, users.ErrUnauthorizedAccess):
-			w.WriteHeader(http.StatusForbidden)
+		case errors.Contains(errorVal, users.ErrUnauthenticated):
+			w.WriteHeader(http.StatusUnauthorized)
 		case errors.Contains(errorVal, users.ErrConflict):
 			w.WriteHeader(http.StatusConflict)
 		case errors.Contains(errorVal, ErrUnsupportedContentType):

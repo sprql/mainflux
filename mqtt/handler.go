@@ -22,15 +22,15 @@ var _ session.Handler = (*handler)(nil)
 const protocol = "mqtt"
 
 var (
-	channelRegExp         = regexp.MustCompile(`^\/?channels\/([\w\-]+)\/messages(\/[^?]*)?(\?.*)?$`)
-	errMalformedTopic     = errors.New("malformed topic")
-	errMalformedData      = errors.New("malformed request data")
-	errMalformedSubtopic  = errors.New("malformed subtopic")
-	errUnauthorizedAccess = errors.New("missing or invalid credentials provided")
-	errNilClient          = errors.New("using nil client")
-	errInvalidConnect     = errors.New("CONNECT request with invalid username or client ID")
-	errNilTopicPub        = errors.New("PUBLISH to nil topic")
-	errNilTopicSub        = errors.New("SUB to nil topic")
+	channelRegExp        = regexp.MustCompile(`^\/?channels\/([\w\-]+)\/messages(\/[^?]*)?(\?.*)?$`)
+	errMalformedTopic    = errors.New("malformed topic")
+	errMalformedData     = errors.New("malformed request data")
+	errMalformedSubtopic = errors.New("malformed subtopic")
+	errUnauthenticated   = errors.New("missing or invalid credentials provided")
+	errNilClient         = errors.New("using nil client")
+	errInvalidConnect    = errors.New("CONNECT request with invalid username or client ID")
+	errNilTopicPub       = errors.New("PUBLISH to nil topic")
+	errNilTopicSub       = errors.New("SUB to nil topic")
 )
 
 // Event implements events.Event interface
@@ -65,7 +65,7 @@ func (h *handler) AuthConnect(c *session.Client) error {
 	}
 
 	if thid != c.Username {
-		return errUnauthorizedAccess
+		return errUnauthenticated
 	}
 
 	if err := h.es.Connect(c.Username); err != nil {

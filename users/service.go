@@ -21,9 +21,9 @@ var (
 	// (e.g. invalid username or password).
 	ErrMalformedEntity = errors.New("malformed entity specification")
 
-	// ErrUnauthorizedAccess indicates missing or invalid credentials provided
+	// ErrUnauthenticated indicates missing or invalid credentials provided
 	// when accessing a protected resource.
-	ErrUnauthorizedAccess = errors.New("missing or invalid credentials provided")
+	ErrUnauthenticated = errors.New("missing or invalid credentials provided")
 
 	// ErrNotFound indicates a non-existent entity request.
 	ErrNotFound = errors.New("non-existent entity")
@@ -123,11 +123,11 @@ func (svc usersService) Register(ctx context.Context, user User) error {
 func (svc usersService) Login(ctx context.Context, user User) (string, error) {
 	dbUser, err := svc.users.RetrieveByEmail(ctx, user.Email)
 	if err != nil {
-		return "", errors.Wrap(ErrUnauthorizedAccess, err)
+		return "", errors.Wrap(ErrUnauthenticated, err)
 	}
 
 	if err := svc.hasher.Compare(user.Password, dbUser.Password); err != nil {
-		return "", errors.Wrap(ErrUnauthorizedAccess, err)
+		return "", errors.Wrap(ErrUnauthenticated, err)
 	}
 
 	return svc.issue(ctx, dbUser.Email, authn.UserKey)
@@ -141,7 +141,7 @@ func (svc usersService) ViewUser(ctx context.Context, token string) (User, error
 
 	dbUser, err := svc.users.RetrieveByEmail(ctx, email)
 	if err != nil {
-		return User{}, errors.Wrap(ErrUnauthorizedAccess, err)
+		return User{}, errors.Wrap(ErrUnauthenticated, err)
 	}
 
 	return User{
@@ -155,7 +155,7 @@ func (svc usersService) ViewUser(ctx context.Context, token string) (User, error
 func (svc usersService) UpdateUser(ctx context.Context, token string, u User) error {
 	email, err := svc.identify(ctx, token)
 	if err != nil {
-		return errors.Wrap(ErrUnauthorizedAccess, err)
+		return errors.Wrap(ErrUnauthenticated, err)
 	}
 
 	user := User{
@@ -182,7 +182,7 @@ func (svc usersService) GenerateResetToken(ctx context.Context, email, host stri
 func (svc usersService) ResetPassword(ctx context.Context, resetToken, password string) error {
 	email, err := svc.identify(ctx, resetToken)
 	if err != nil {
-		return errors.Wrap(ErrUnauthorizedAccess, err)
+		return errors.Wrap(ErrUnauthenticated, err)
 	}
 
 	u, err := svc.users.RetrieveByEmail(ctx, email)
@@ -200,7 +200,7 @@ func (svc usersService) ResetPassword(ctx context.Context, resetToken, password 
 func (svc usersService) ChangePassword(ctx context.Context, authToken, password, oldPassword string) error {
 	email, err := svc.identify(ctx, authToken)
 	if err != nil {
-		return errors.Wrap(ErrUnauthorizedAccess, err)
+		return errors.Wrap(ErrUnauthenticated, err)
 	}
 
 	u := User{
@@ -208,7 +208,7 @@ func (svc usersService) ChangePassword(ctx context.Context, authToken, password,
 		Password: oldPassword,
 	}
 	if _, err := svc.Login(ctx, u); err != nil {
-		return ErrUnauthorizedAccess
+		return ErrUnauthenticated
 	}
 
 	u, err = svc.users.RetrieveByEmail(ctx, email)
@@ -232,7 +232,7 @@ func (svc usersService) SendPasswordReset(_ context.Context, host, email, token 
 func (svc usersService) identify(ctx context.Context, token string) (string, error) {
 	email, err := svc.auth.Identify(ctx, &mainflux.Token{Value: token})
 	if err != nil {
-		return "", errors.Wrap(ErrUnauthorizedAccess, err)
+		return "", errors.Wrap(ErrUnauthenticated, err)
 	}
 	return email.GetValue(), nil
 }

@@ -33,7 +33,7 @@ paths:
               description: Created configuration's relative URL (i.e. /things/configs/{configId}).
         400:
           description: Failed due to malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
         415:
           description: Missing or invalid content type.
@@ -62,8 +62,10 @@ paths:
             $ref: "#/definitions/ConfigList"
         400:
           description: Failed due to malformed query parameters.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         500:
           $ref: "#/responses/ServiceError"
   /things/bootstrap/{externalId}:
@@ -105,7 +107,7 @@ paths:
             $ref: "#/definitions/BootstrapRes"
         404:
           description: |
-            Failed to retrieve corresponding config. 
+            Failed to retrieve corresponding config.
         500:
           $ref: "#/responses/ServiceError"
   /things/configs/{configId}:
@@ -121,8 +123,10 @@ paths:
           description: Data retrieved.
           schema:
             $ref: "#/definitions/ConfigRes"
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
           description: Config does not exist.
         500:
@@ -149,8 +153,10 @@ paths:
           description: Config updated.
         400:
           description: Failed due to malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
           description: Config does not exist.
         415:
@@ -172,8 +178,10 @@ paths:
           description: Config removed.
         400:
           description: Failed due to malformed config ID.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         500:
           $ref: "#/responses/ServiceError"
   /things/configs/certs/{configId}:
@@ -198,8 +206,10 @@ paths:
           description: Config updated.
         400:
           description: Failed due to malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
           description: Config does not exist.
         415:
@@ -228,8 +238,10 @@ paths:
           description: Config updated.
         400:
           description: Failed due to malformed JSON.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         404:
           description: Config does not exist.
         415:
@@ -263,8 +275,10 @@ paths:
           description: Config removed.
         400:
           description: Failed due to malformed config's ID.
-        403:
+        401:
           description: Missing or invalid access token provided.
+        403:
+          description: Unauthorized access.
         500:
           $ref: "#/responses/ServiceError"
 

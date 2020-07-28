@@ -23,7 +23,7 @@ type createThingReq struct {
 
 func (req createThingReq) validate() error {
 	if req.token == "" {
-		return things.ErrUnauthorizedAccess
+		return things.ErrUnauthenticated
 	}
 
 	if len(req.Name) > maxNameSize {
@@ -40,7 +40,7 @@ type createThingsReq struct {
 
 func (req createThingsReq) validate() error {
 	if req.token == "" {
-		return things.ErrUnauthorizedAccess
+		return things.ErrUnauthenticated
 	}
 
 	if len(req.Things) <= 0 {
@@ -65,7 +65,7 @@ type updateThingReq struct {
 
 func (req updateThingReq) validate() error {
 	if req.token == "" {
-		return things.ErrUnauthorizedAccess
+		return things.ErrUnauthenticated
 	}
 
 	if req.id == "" {
@@ -87,7 +87,7 @@ type updateKeyReq struct {
 
 func (req updateKeyReq) validate() error {
 	if req.token == "" {
-		return things.ErrUnauthorizedAccess
+		return things.ErrUnauthenticated
 	}
 
 	if req.id == "" || req.Key == "" {
@@ -105,7 +105,7 @@ type createChannelReq struct {
 
 func (req createChannelReq) validate() error {
 	if req.token == "" {
-		return things.ErrUnauthorizedAccess
+		return things.ErrUnauthenticated
 	}
 
 	if len(req.Name) > maxNameSize {
@@ -122,7 +122,7 @@ type createChannelsReq struct {
 
 func (req createChannelsReq) validate() error {
 	if req.token == "" {
-		return things.ErrUnauthorizedAccess
+		return things.ErrUnauthenticated
 	}
 
 	if len(req.Channels) <= 0 {
@@ -147,7 +147,7 @@ type updateChannelReq struct {
 
 func (req updateChannelReq) validate() error {
 	if req.token == "" {
-		return things.ErrUnauthorizedAccess
+		return things.ErrUnauthenticated
 	}
 
 	if req.id == "" {
@@ -168,7 +168,7 @@ type viewResourceReq struct {
 
 func (req viewResourceReq) validate() error {
 	if req.token == "" {
-		return things.ErrUnauthorizedAccess
+		return things.ErrUnauthenticated
 	}
 
 	if req.id == "" {
@@ -188,7 +188,7 @@ type listResourcesReq struct {
 
 func (req *listResourcesReq) validate() error {
 	if req.token == "" {
-		return things.ErrUnauthorizedAccess
+		return things.ErrUnauthenticated
 	}
 
 	if req.limit == 0 || req.limit > maxLimitSize {
@@ -212,7 +212,7 @@ type listByConnectionReq struct {
 
 func (req listByConnectionReq) validate() error {
 	if req.token == "" {
-		return things.ErrUnauthorizedAccess
+		return things.ErrUnauthenticated
 	}
 
 	if req.id == "" {
@@ -234,7 +234,7 @@ type connectionReq struct {
 
 func (req connectionReq) validate() error {
 	if req.token == "" {
-		return things.ErrUnauthorizedAccess
+		return things.ErrUnauthenticated
 	}
 
 	if req.chanID == "" || req.thingID == "" {
@@ -252,7 +252,7 @@ type createConnectionsReq struct {
 
 func (req createConnectionsReq) validate() error {
 	if req.token == "" {
-		return things.ErrUnauthorizedAccess
+		return things.ErrUnauthenticated
 	}
 
 	if len(req.ChannelIDs) == 0 || len(req.ThingIDs) == 0 {

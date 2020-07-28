@@ -121,9 +121,10 @@ func TestIssue(t *testing.T) {
 			status: http.StatusBadRequest,
 		},
 		{
-			desc: "issue user key wrong content type",
-			req:  toJSON(uk),
-			ct:   "", token: userKey.Secret,
+			desc:   "issue user key wrong content type",
+			req:    toJSON(uk),
+			ct:     "",
+			token:  userKey.Secret,
 			status: http.StatusUnsupportedMediaType,
 		},
 		{
@@ -134,11 +135,11 @@ func TestIssue(t *testing.T) {
 			status: http.StatusUnsupportedMediaType,
 		},
 		{
-			desc:   "issue key unauthorized",
+			desc:   "issue key with an unauthorized token",
 			req:    toJSON(ak),
 			ct:     contentType,
 			token:  "wrong",
-			status: http.StatusForbidden,
+			status: http.StatusUnauthorized,
 		},
 		{
 			desc:   "issue recovery key with empty token",
@@ -217,10 +218,10 @@ func TestRetrieve(t *testing.T) {
 			status: http.StatusNotFound,
 		},
 		{
-			desc:   "retrieve a key unauthorized",
+			desc:   "retrieve an unauthorized token",
 			id:     k.ID,
 			token:  "wrong",
-			status: http.StatusForbidden,
+			status: http.StatusUnauthorized,
 		},
 	}
 
@@ -269,10 +270,10 @@ func TestRevoke(t *testing.T) {
 			status: http.StatusNoContent,
 		},
 		{
-			desc:   "revoke a key unauthorized",
+			desc:   "revoke an unauthorized token",
 			id:     k.ID,
 			token:  "wrong",
-			status: http.StatusForbidden},
+			status: http.StatusUnauthorized},
 	}
 
 	for _, tc := range cases {

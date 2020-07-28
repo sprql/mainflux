@@ -39,12 +39,12 @@ func (tc thingsClient) CanAccessByKey(ctx context.Context, req *mainflux.AccessB
 	}
 
 	if key == "" {
-		return nil, things.ErrUnauthorizedAccess
+		return nil, things.ErrUnauthenticated
 	}
 
 	id, ok := tc.things[key]
 	if !ok {
-		return nil, status.Error(codes.PermissionDenied, "invalid credentials provided")
+		return nil, status.Error(codes.PermissionDenied, "unauthorized access")
 	}
 
 	return &mainflux.ThingID{Value: id}, nil

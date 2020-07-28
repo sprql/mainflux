@@ -103,7 +103,9 @@ func encodeError(_ context.Context, err error, w http.ResponseWriter) {
 	switch {
 	case errors.Contains(err, authn.ErrMalformedEntity):
 		w.WriteHeader(http.StatusBadRequest)
-	case errors.Contains(err, authn.ErrUnauthorizedAccess):
+	case errors.Contains(err, authn.ErrUnauthenticated):
+		w.WriteHeader(http.StatusUnauthorized)
+	case errors.Contains(err, authn.ErrUnauthorized):
 		w.WriteHeader(http.StatusForbidden)
 	case errors.Contains(err, authn.ErrNotFound):
 		w.WriteHeader(http.StatusNotFound)

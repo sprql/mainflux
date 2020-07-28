@@ -27,7 +27,7 @@ type viewUserReq struct {
 
 func (req viewUserReq) validate() error {
 	if req.token == "" {
-		return users.ErrUnauthorizedAccess
+		return users.ErrUnauthenticated
 	}
 	return nil
 }
@@ -39,7 +39,7 @@ type updateUserReq struct {
 
 func (req updateUserReq) validate() error {
 	if req.token == "" {
-		return users.ErrUnauthorizedAccess
+		return users.ErrUnauthenticated
 	}
 	return nil
 }
@@ -83,13 +83,13 @@ type passwChangeReq struct {
 
 func (req passwChangeReq) validate() error {
 	if req.Token == "" {
-		return users.ErrUnauthorizedAccess
+		return users.ErrUnauthenticated
 	}
 	if len(req.Password) < minPassLen {
 		return users.ErrMalformedEntity
 	}
 	if req.OldPassword == "" {
-		return users.ErrUnauthorizedAccess
+		return users.ErrUnauthenticated
 	}
 	return nil
 }
